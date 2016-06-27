@@ -1,0 +1,25 @@
+{
+	"manifest_version": 2,
+	"name": "Show Battery Consumption2",
+	"version": "1.0",
+	"description": "This extension will show battery consumption.",
+	"browser_action": {
+		"default_icon": "sb2.png",
+		"default_title": "消費電力を表示します"
+	},
+	"background": {
+		"scripts": [
+			"background.js",
+			"jquery-2.2.3.min.js"
+		]
+	},
+	"content_scripts": [
+        {
+        	"matches": [ "http://*/*", "https://*/*" ],
+        	"js": ["content_script.js"]
+        }
+    ],
+	"permissions": [
+		"tabs"
+	]
+}
