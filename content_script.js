@@ -1,7 +1,8 @@
 var showBattery = function(){
 
 	var before,after;	//計測前後のバッテリーを記憶
-	var timer = 1 * 60000;	//計測する時間(ミリ秒指定)
+//	var timer = 1 * 60000;	//計測する時間(ミリ秒指定)
+	var timer = 5000;	//5秒
 
 	navigator.getBattery().then(function(b){
 		console.log(b.level * 100 + "%");
@@ -9,7 +10,7 @@ var showBattery = function(){
 	});
 
 	var countup = function(){
-　		navigator.getBattery().then(function(b){
+		navigator.getBattery().then(function(b){
 			console.log(b.level * 100 + "%");
 			after = b.level * 100;	//計測終了時のバッテリー
 			alert("The difference is " + (after - before) + "%.");	//計測結果をalertで表示
@@ -31,6 +32,6 @@ chrome.runtime.sendMessage({msg: "sending..."}, function(response){	//background
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse){
 	    console.log('received!!');
-	    showBattery();
+	    //showBattery();
 	}
 );

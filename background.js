@@ -1,3 +1,5 @@
+var Tab_Id;
+
 var start = function() {
     // stub
     var getNextUrl = function() {
@@ -10,6 +12,7 @@ var start = function() {
         {url: url},
         function(tab) {
             console.log(tab);
+	    Tab_Id = tab.id;
             //waitContentLoad();
 
             // message passing.(以下はタブの生成完了を待たないため，成功しない！)
@@ -23,13 +26,12 @@ var start = function() {
 };
 
 (function() {   //アイコンクリックで測定開始
-  //chrome.browserAction.onClicked.addListener(showBattery);
-  chrome.browserAction.onClicked.addListener(start);
+	chrome.browserAction.onClicked.addListener(start);
 }) ();
 
 chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを受信すると実行
   function (request, sender, sendResponse) {
-    chrome.runtime.sendMessage({msg: "sending..."}, function(response){
+    chrome.tabs.sendMessage(Tab_Id, {msg: "sending..."}, function(response){
         console.log("finished!");
     });
   }
