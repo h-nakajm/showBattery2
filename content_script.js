@@ -32,6 +32,6 @@ chrome.runtime.sendMessage({msg: "sending..."}, function(response){	//background
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse){
 	    console.log('received!!');
-	    //showBattery();
+	    showBattery();
 	}
 );
