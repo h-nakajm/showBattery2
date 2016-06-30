@@ -13,7 +13,11 @@ var showBattery = function(){
 		navigator.getBattery().then(function(b){
 			console.log(b.level * 100 + "%");
 			after = b.level * 100;	//計測終了時のバッテリー
-			alert("The difference is " + (after - before) + "%.");	//計測結果をalertで表示
+			var result = after - before;
+			//alert("The difference is " + result + "%.");	//計測結果をalertで表示
+			chrome.runtime.sendMessage({msg: "finished", result: result}, function(response){
+				console.log("showBattery has finished!");
+			});
 		});
 	};
 
@@ -22,10 +26,6 @@ var showBattery = function(){
 };
 
 chrome.runtime.sendMessage({msg: "sending..."}, function(response){	//background.jsにメッセージを送信
-	console.log("aaa");
-	if(response){
-		alert(response);
-	}
 });
 
 

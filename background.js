@@ -3,7 +3,7 @@ var Tab_Id;
 var start = function() {
     // stub
     var getNextUrl = function() {
-        return 'http://bollywoodindianmovies.com/';
+        return 'https://www.google.co.jp';
     }
 
     var url = getNextUrl();
@@ -11,7 +11,7 @@ var start = function() {
     chrome.tabs.create(
         {url: url},
         function(tab) {
-            console.log(tab);
+            //console.log(tab);
 	    Tab_Id = tab.id;
             //waitContentLoad();
 
@@ -31,9 +31,14 @@ var start = function() {
 
 chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを受信すると実行
   function (request, sender, sendResponse) {
-    chrome.tabs.sendMessage(Tab_Id, {msg: "sending..."}, function(response){
-        console.log("finished!");
-    });
+	  if(request.msg == "sending..."){
+		  chrome.tabs.sendMessage(Tab_Id, {msg: "sending..."}, function(response){
+			  console.log("finished!");
+		  });
+	  };
+	  if(request.msg == "finished"){
+		  console.log(request.result + "%");
+	  }
   }
 );
 
