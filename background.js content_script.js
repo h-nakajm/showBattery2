@@ -1,37 +1,72 @@
-var showBattery = function(){
+var Tab_Id;
 
-	var before,after;	//計測前後のバッテリーを記憶
-//	var timer = 1 * 60000;	//計測する時間(ミリ秒指定)
-	var timer = 5000;	//5秒(デバッグ用)
+var start = function() {
+	// stub
+	var getNextUrl = function() {
+		return 'https://www.google.co.jp';
+	}
 
-	navigator.getBattery().then(function(b){
-		console.log(b.level * 100 + "%");
-		before = b.level * 100;	//計測開始時のバッテリー
-	});
+	var url = getNextUrl();
 
-	var countup = function(){
-		navigator.getBattery().then(function(b){
-			console.log(b.level * 100 + "%");
-			after = b.level * 100;	//計測終了時のバッテリー
-			var result = after - before;
-			//alert("The difference is " + result + "%.");	//計測結果をalertで表示
-			chrome.runtime.sendMessage({msg: "finished", result: result}, function(response){
-				console.log("showBattery has finished!");
-			});
-		});
-	};
+	chrome.tabs.create(
+		{url: url},
+		function(tab) {
+			//console.log(tab);
+			Tab_Id = tab.id;
+			//waitContentLoad();
 
-	setTimeout(countup, timer);	//countupをtimer時間後に実行
+			// message passing.(以下はタブの生成完了を待たないため，成功しない！)
+			//chrome.tabs.sendMessage(tab.id, {task: '001', msg: 'hello'});
 
+			//var before = new Date();
+			//tab.sendMessage(getTask);
+			//console.log((new Date() - before));
+		}
+	);
 };
 
-chrome.runtime.sendMessage({msg: "sending..."}, function(response){	//background.jsにメッセージを送信
-});
+(function() {   //アイコンクリックで測定開始
+	chrome.browserAction.onClicked.addListener(start);
+}) ();
 
-
-chrome.runtime.onMessage.addListener(
-	function(request, sender, sendResponse){
-	    console.log('received!!');
-	    showBattery();
+chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを受信すると実行
+	function (request, sender, sendResponse) {
+		if(request.msg == "sending..."){
+			chrome.tabs.sendMessage(Tab_Id, {msg: "sending..."}, function(response){
+				console.log("finished!");
+			});
+		} else if(request.msg == "finished"){
+			console.log("Energy Consumption: " + request.result + "%");
+			console.log("Window Height: " + request.height);
+			console.log("Window Width: " + request.width);
+			chrome.tabs.remove(Tab_Id);
+		}
 	}
 );
+
+
+
+/*(function() {     //まつ本先生のコード
+    // stub
+    var getNextUrl = function() {
+        return 'http://bollywoodindianmovies.com/';
+    }
+
+    var url = getNextUrl();
+
+    chrome.tabs.create(
+        {url: url},
+        function(tab) {
+            console.log(tab);
+            //waitContentLoad();
+
+            // message passing.
+            chrome.tabs.sendMessage(tab.id, {task: '001', msg: 'hello'});
+
+            var before = new Date();
+            //tab.sendMessage(getTask);
+            console.log((new Date() - before));
+        }
+    );
+}());*/
+
