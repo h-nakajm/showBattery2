@@ -8,6 +8,18 @@ var start = function() {
 
 	var url = getNextUrl();
 
+	chrome.runtime.getPackageDirectoryEntry(function(entry) {	//indexファイルの読み込み
+		entry.getFile('index.json', {create: false}, function(file_entry) {
+			file_entry.file(function(file){
+				var reader = new FileReader;
+				reader.onload = function(event){
+					console.log(event.target.result);	//ファイルの中身を表示
+				};
+				reader.readAsText(file, 'utf-8');
+			});
+		});
+	})
+
 	chrome.tabs.create(
 		{url: url},
 		function(tab) {
