@@ -1,5 +1,15 @@
+var tab_id;
+
 chrome.runtime.sendMessage({msg: "sending..."}, function(response){	//background.jsにメッセージを送信
 });
+
+/*var getTabId = function(){
+	var tab_id;
+	chrome.tabs.getCurrent(function(tab){
+		tab_id = tab.id;
+	});
+	return tab_id;
+};*/
 
 var showBattery = function(){	//background.jsからメッセージを受信すると実行開始
 
@@ -8,20 +18,20 @@ var showBattery = function(){	//background.jsからメッセージを受信す�
 	var timer = 5000;	//5秒(デバッグ用)
 
 	navigator.getBattery().then(function(b){
-		console.log(b.level * 100 + "%");
+		console.log(b.level * 100 + "%");	//デバッグ用
 		before = b.level * 100;	//計測開始時のバッテリー
 	});
 
 	var countup = function(){
 		navigator.getBattery().then(function(b){
-			console.log(b.level * 100 + "%");
+			console.log(b.level * 100 + "%");	//デバッグ用
 			after = b.level * 100;	//計測終了時のバッテリー
 			var result = after - before;
 			chrome.runtime.sendMessage(			//計測結果をメッセージで送信
 				{	msg: "finished",
 					result: result,
 					height: getHeight(),
-					width: getWidth()
+					width: getWidth(),
 				}, function(response){
 
 				}

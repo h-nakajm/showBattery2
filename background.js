@@ -8,7 +8,7 @@ var start = function() {
 
 	var url = getNextUrl();
 
-	chrome.runtime.getPackageDirectoryEntry(function(entry) {	//indexファイルの読み込み
+	/*chrome.runtime.getPackageDirectoryEntry(function(entry) {	//indexファイルの読み込み
 		entry.getFile('index.json', {create: false}, function(file_entry) {
 			file_entry.file(function(file){
 				var reader = new FileReader;
@@ -18,14 +18,12 @@ var start = function() {
 				reader.readAsText(file, 'utf-8');
 			});
 		});
-	});
+	});*/	//将来の拡張のための準備
 
 	chrome.tabs.create(
 		{url: url},
 		function(tab) {
-			//console.log(tab);
 			Tab_Id = tab.id;
-			//waitContentLoad();
 		}
 	);
 
@@ -40,33 +38,17 @@ var start = function() {
 				console.log("Energy Consumption: " + request.result + "%");
 				console.log("Window Height: " + request.height);
 				console.log("Window Width: " + request.width);
-				console.log("Tab_Id: " + Tab_Id);
-				chrome.tabs.remove(Tab_Id);
+				chrome.tabs.query({active: true, currentWindow: true}, function(tabs){	//計測が終了したタブを閉じる
+					chrome.tabs.remove(tabs[0].id);
+				});
 			}
 		}
 	);
-
 };
 
 (function() {   //アイコンクリックで測定開始
 	chrome.browserAction.onClicked.addListener(start);
 }) ();
-
-/*chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを受信すると実行
-	function (request, sender, sendResponse) {
-		if(request.msg == "sending..."){
-			chrome.tabs.sendMessage(Tab_Id, {msg: "sending..."}, function(response){
-				console.log("finished!");
-			});
-		} else if(request.msg == "finished"){	//結果を表示
-			console.log("Energy Consumption: " + request.result + "%");
-			console.log("Window Height: " + request.height);
-			console.log("Window Width: " + request.width);
-			chrome.tabs.remove(Tab_Id);
-		}
-	}
-);*/
-
 
 
 /*(function() {     //まつ本先生のコード
