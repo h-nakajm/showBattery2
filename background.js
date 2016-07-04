@@ -30,7 +30,7 @@ var start = function() {
 	chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを受信すると実行
 		function (request, sender, sendResponse) {
 			if(request.msg == "sending..."){
-				chrome.tabs.sendMessage(Tab_Id, {msg: "sending..."}, function(response){
+				chrome.tabs.sendMessage(sender.tab.id, {msg: "sending..."}, function(response){
 
 					console.log("sender: " + sender);
 				});
@@ -38,9 +38,7 @@ var start = function() {
 				console.log("Energy Consumption: " + request.result + "%");
 				console.log("Window Height: " + request.height);
 				console.log("Window Width: " + request.width);
-				chrome.tabs.query({active: true, currentWindow: true}, function(tabs){	//計測が終了したタブを閉じる
-					chrome.tabs.remove(tabs[0].id);
-				});
+				chrome.tabs.remove(sender.tab.id);	//計測が終了したタブを閉じる
 			}
 		}
 	);
