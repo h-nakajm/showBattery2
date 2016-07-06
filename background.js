@@ -4,7 +4,7 @@ var start = function() {
 	// stub
 	var getNextUrl = function() {
 		return 'https://www.google.co.jp';
-	}
+	};
 
 	var url = getNextUrl();
 
@@ -27,7 +27,7 @@ var start = function() {
 		}
 	);
 
-	chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを受信すると実行
+	/*chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを受信すると実行
 		function (request, sender, sendResponse) {
 			if(request.msg == "sending..."){
 				chrome.tabs.sendMessage(sender.tab.id, {msg: "sending..."}, function(response){
@@ -41,8 +41,24 @@ var start = function() {
 				chrome.tabs.remove(sender.tab.id);	//計測が終了したタブを閉じる
 			}
 		}
-	);
+	);*/
 };
+
+chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを受信すると実行
+	function (request, sender, sendResponse) {
+		if(request.msg == "sending..."){
+			chrome.tabs.sendMessage(sender.tab.id, {msg: "sending..."}, function(response){
+			  //処理なし
+			});
+		} else if(request.msg == "finished"){	//結果を表示
+			console.log("Energy Consumption: " + request.result + "%");
+			console.log("Window Height: " + request.height);
+			console.log("Window Width: " + request.width);
+			console.log("------------------------------");
+			chrome.tabs.remove(sender.tab.id);	//計測が終了したタブを閉じる
+		}
+	}
+);
 
 (function() {   //アイコンクリックで測定開始
 	chrome.browserAction.onClicked.addListener(start);
