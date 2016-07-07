@@ -15,11 +15,11 @@ var start = function() {
 				reader.onload = function(event){	//ファイルのreadが完了すると実行
 					url_list = JSON.parse(event.target.result);	//urlのリストを配列に格納
 					chrome.tabs.create(
-		        {url: url_list[1]},
-		        function(tab) {
-			        Tab_Id = tab.id;
-		        }
-	        );
+						{url: url_list[1]},
+						function(tab) {
+							Tab_Id = tab.id;
+						}
+					);
 				};
 				reader.readAsText(file, 'utf-8');
 			});
