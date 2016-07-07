@@ -1,4 +1,5 @@
-var url_list;
+var UrlList;
+var Index = 1;	//UrlList走査用のGlobal variable(インクリメントのみ)
 
 var start = function() {
 	//var url_list;
@@ -14,9 +15,9 @@ var start = function() {
 			file_entry.file(function(file){
 				var reader = new FileReader();
 				reader.onload = function(event){	//ファイルのreadが完了すると実行
-					url_list = JSON.parse(event.target.result);	//urlのリストを配列に格納
+					UrlList = JSON.parse(event.target.result);	//urlのリストを配列に格納
 					chrome.tabs.create(
-						{url: url_list[0]},
+						{url: UrlList[0]},
 						function(tab) {
 						
 						}
@@ -47,6 +48,7 @@ chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを
 			console.log("Window Width: " + request.width);
 			console.log("------------------------------");
 			chrome.tabs.remove(sender.tab.id);	//計測が終了したタブを閉じる
+			chrome.tabs.create({url: UrlList[1]});	//次のタブを生成(このままだと，永遠にUrlList[1]を出力し続ける)
 		}
 	}
 );
