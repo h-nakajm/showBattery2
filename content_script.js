@@ -1,6 +1,15 @@
 var tab_id;
+var date = new Date();
 
-chrome.runtime.sendMessage({msg: "sending..."}, function(response){	//background.jsにメッセージを送信
+chrome.runtime.sendMessage(
+		{	msg: "sending...",
+			year: date.getFullYear(),
+			month: date.getMonth()+1,
+			day: date.getDate(),
+			hour: date.getHours(),
+			minute: date.getMinutes(),
+			second: date.getSeconds(),
+		}, function(response){	//background.jsにメッセージを送信
 });
 
 /*var getTabId = function(){
@@ -27,8 +36,16 @@ var showBattery = function(){	//background.jsからメッセージを受信す�
 			console.log(b.level * 100 + "%");	//デバッグ用
 			after = b.level * 100;	//計測終了時のバッテリー
 			var result = after - before;
+			var date2 = new Date();
 			chrome.runtime.sendMessage(			//計測結果をメッセージで送信
-				{	msg: "finished",
+				{	
+					msg: "finished",
+					year: date2.getFullYear(),
+					month: date2.getMonth()+1,
+					day: date2.getDate(),
+					hour: date2.getHours(),
+					minute: date2.getMinutes(),
+					second: date2.getSeconds(),
 					result: result,
 					height: getHeight(),
 					width: getWidth(),

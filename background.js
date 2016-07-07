@@ -31,10 +31,16 @@ var start = function() {
 chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを受信すると実行
 	function (request, sender, sendResponse) {
 		if(request.msg == "sending..."){
+			console.log("start: ");
+			console.log(request.year + "年" + request.month + "月" + request.day + "日"
+					+ request.hour + "時" + request.minute + "分" + request.second + "秒");
 			chrome.tabs.sendMessage(sender.tab.id, {msg: "sending..."}, function(response){
 			  //処理なし
 			});
 		} else if(request.msg == "finished"){	//結果を表示
+			console.log("finish: ");
+			console.log(request.year + "年" + request.month + "月" + request.day + "日"
+					+ request.hour + "時" + request.minute + "分" + request.second + "秒");
 			console.log("Energy Consumption: " + request.result + "%");
 			console.log("Window Height: " + request.height);
 			console.log("Window Width: " + request.width);
