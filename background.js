@@ -35,20 +35,31 @@ chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを
 	function (request, sender, sendResponse) {
 		if(request.msg == "sending..."){
 			console.log("start: ");
+			result += "start: \n";
 			console.log(request.year + "年" + request.month + "月" + request.day + "日"
 					+ request.hour + "時" + request.minute + "分" + request.second + "秒");
+			result = result + request.year + "年" + request.month + "月" + request.day + "日"
+					+ request.hour + "時" + request.minute + "分" + request.second + "秒\n";
 			chrome.tabs.sendMessage(sender.tab.id, {msg: "sending..."}, function(response){
 			  //処理なし
 			});
 		} else if(request.msg == "finished"){	//結果を表示
 			console.log("finish: ");
+			result += "finish: \n";
 			console.log(request.year + "年" + request.month + "月" + request.day + "日"
 					+ request.hour + "時" + request.minute + "分" + request.second + "秒");
+			result = result + request.year + "年" + request.month + "月" + request.day + "日"
+					+ request.hour + "時" + request.minute + "分" + request.second + "秒\n";
 			console.log("url: " + UrlList[Index-1]);
+			result = result + "url: " + UrlList[Index-1] + "\n";
 			console.log("Energy Consumption: " + request.result + "%");
+			result = result + "Energy Consumption: " + request.result + "%\n";
 			console.log("Window Height: " + request.height);
+			result = result + "Window Height: " + request.height + "\n";
 			console.log("Window Width: " + request.width);
+			result = result + "Window Width: " + request.width + "\n";
 			console.log("------------------------------");
+			result += "------------------------------\n";
 			chrome.tabs.remove(sender.tab.id);	//計測が終了したタブを閉じる
 			if(UrlList.length > Index){
 				chrome.tabs.create({url: UrlList[Index]});	//次のタブを生成	
