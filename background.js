@@ -43,12 +43,16 @@ chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを
 			console.log("finish: ");
 			console.log(request.year + "年" + request.month + "月" + request.day + "日"
 					+ request.hour + "時" + request.minute + "分" + request.second + "秒");
+			console.log("url: " + UrlList[Index-1]);
 			console.log("Energy Consumption: " + request.result + "%");
 			console.log("Window Height: " + request.height);
 			console.log("Window Width: " + request.width);
 			console.log("------------------------------");
 			chrome.tabs.remove(sender.tab.id);	//計測が終了したタブを閉じる
-			chrome.tabs.create({url: UrlList[1]});	//次のタブを生成(このままだと，永遠にUrlList[1]を出力し続ける)
+			if(UrlList.length > Index){
+				chrome.tabs.create({url: UrlList[Index]});	//次のタブを生成	
+				Index++;
+			}
 		}
 	}
 );
