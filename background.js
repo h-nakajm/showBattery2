@@ -33,7 +33,7 @@ var start = function() {
 
 chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを受信すると実行
 	function (request, sender, sendResponse) {
-		if(request.msg == "sending..."){
+		/*if(request.msg == "sending..."){
 			console.log("start: ");
 			result += "start: \n";
 			console.log(request.year + "年" + request.month + "月" + request.day + "日"
@@ -43,13 +43,19 @@ chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを
 			chrome.tabs.sendMessage(sender.tab.id, {msg: "sending..."}, function(response){
 			  //処理なし
 			});
-		} else if(request.msg == "finished"){	//結果を表示
+		} else */if(request.msg == "finished"){	//結果を表示
+			console.log("start: ")
+			result += "start: \n";
+			console.log(request.year1 + "年" + request.month1 + "月" + request.day1 + "日"
+					+ request.hour1 + "時" + request.minute1 + "分" + request.second1 + "秒");
+			result = result + request.year1 + "年" + request.month1 + "月" + request.day1 + "日"
+					+ request.hour1 + "時" + request.minute1 + "分" + request.second1 + "秒\n";
 			console.log("finish: ");
 			result += "finish: \n";
-			console.log(request.year + "年" + request.month + "月" + request.day + "日"
-					+ request.hour + "時" + request.minute + "分" + request.second + "秒");
-			result = result + request.year + "年" + request.month + "月" + request.day + "日"
-					+ request.hour + "時" + request.minute + "分" + request.second + "秒\n";
+			console.log(request.year2 + "年" + request.month2 + "月" + request.day2 + "日"
+					+ request.hour2 + "時" + request.minute2 + "分" + request.second2 + "秒");
+			result = result + request.year2 + "年" + request.month2 + "月" + request.day2 + "日"
+					+ request.hour2 + "時" + request.minute2 + "分" + request.second2 + "秒\n";
 			console.log("url: " + UrlList[Index-1]);
 			result = result + "url: " + UrlList[Index-1] + "\n";
 			console.log("Energy Consumption: " + request.result + "%");

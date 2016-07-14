@@ -1,7 +1,7 @@
 var tab_id;
-var date = new Date();
+//var date = new Date();
 
-chrome.runtime.sendMessage(
+/*chrome.runtime.sendMessage(
 		{	msg: "sending...",
 			year: date.getFullYear(),
 			month: date.getMonth()+1,
@@ -10,7 +10,7 @@ chrome.runtime.sendMessage(
 			minute: date.getMinutes(),
 			second: date.getSeconds(),
 		}, function(response){	//background.jsにメッセージを送信
-});
+});	*/
 
 /*var getTabId = function(){
 	var tab_id;
@@ -20,8 +20,9 @@ chrome.runtime.sendMessage(
 	return tab_id;
 };*/
 
-var showBattery = function(){	//background.jsからメッセージを受信すると実行開始
+window.onload = function(){	//background.jsからメッセージを受信すると実行開始
 
+	var date1 = new Date();
 	var before,after;	//計測前後のバッテリーを記憶
 //	var timer = 1 * 60000;	//計測する時間(ミリ秒指定)
 	var timer = 5000;	//5秒(デバッグ用)
@@ -40,12 +41,18 @@ var showBattery = function(){	//background.jsからメッセージを受信す�
 			chrome.runtime.sendMessage(			//計測結果をメッセージで送信
 				{	
 					msg: "finished",
-					year: date2.getFullYear(),
-					month: date2.getMonth()+1,
-					day: date2.getDate(),
-					hour: date2.getHours(),
-					minute: date2.getMinutes(),
-					second: date2.getSeconds(),
+					year1: date1.getFullYear(),
+					year2: date2.getFullYear(),
+					month1: date1.getMonth()+1,
+					month2: date2.getMonth()+1,
+					day1: date1.getDate(),
+					day2: date2.getDate(),
+					hour1: date1.getHours(),
+					hour2: date2.getHours(),
+					minute1: date1.getMinutes(),
+					minute2: date2.getMinutes(),
+					second1: date1.getSeconds(),
+					second2: date2.getSeconds(),
 					result: result,
 					height: getHeight(),
 					width: getWidth(),
@@ -60,12 +67,12 @@ var showBattery = function(){	//background.jsからメッセージを受信す�
 
 };
 
-chrome.runtime.onMessage.addListener(
+/*chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse){
 	    console.log('received!!');
 	    showBattery();
 	}
-);
+);	*/
 
 var getHeight = function() {	//ウィンドウサイズを表示
 	return(document.body.clientHeight);	//高さ
