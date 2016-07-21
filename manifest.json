@@ -9,14 +9,16 @@
 	},
 	"background": {
 		"scripts": [
-			"background.js",
-			"jquery-2.2.3.min.js"
+			"background.js"
 		]
 	},
 	"content_scripts": [
         {
         	"matches": [ "http://*/*", "https://*/*" ],
-        	"js": ["content_script.js"],
+        	"js": [
+			"content_script.js",
+			"jquery-2.2.3.min.js"
+		],
 		"run_at": "document_end"
         }
     ],
