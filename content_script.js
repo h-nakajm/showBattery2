@@ -56,8 +56,18 @@ window.onload = function(){	//background.jsからメッセージを受信する�
 					result: result,
 					height: getHeight(),
 					width: getWidth(),
-				}, function(response){
-
+				}, function(response){	//mongoDBに計測結果を格納
+					var result = {
+						url:document.location.href,
+						date: new Date(),
+						element:"aaaaa"
+					}
+					$.ajax({
+						url:"http://127.0.0.1:8080/nkjm/result/",
+						type:"POST",
+						contentType:"application/json",
+						data:JSON.stringify(result)
+					})
 				}
 			);
 		});

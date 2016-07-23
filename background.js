@@ -67,10 +67,11 @@ chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを
 			console.log("------------------------------");
 			result += "------------------------------\n";
 			chrome.tabs.remove(sender.tab.id);	//計測が終了したタブを閉じる
+
 			if(UrlList.length > Index){
 				chrome.tabs.create({url: UrlList[Index]});	//次のタブを生成	
 				Index++;
-			} else {	//結果を記入したファイルをダウンロード
+			}/* else {	//結果を記入したファイルをダウンロード
 				var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);	//文字化け対策(?)
 				var mimeType = 'text/plain';
 				var blob = new Blob([bom, result], {type: mimeType});
@@ -88,7 +89,7 @@ chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを
 				} else {
 					console.log('error');
 				}
-			}
+			}*/
 		}
 	}
 );
