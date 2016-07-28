@@ -24,8 +24,8 @@ window.onload = function(){	//background.jsからメッセージを受信する�
 
 	var date1 = new Date();
 	var before,after;	//計測前後のバッテリーを記憶
-	var timer = 1 * 60000;	//計測する時間(ミリ秒指定)
-//	var timer = 5000;	//5秒(デバッグ用)
+//	var timer = 1 * 60000;	//計測する時間(ミリ秒指定)
+	var timer = 5000;	//5秒(デバッグ用)
 
 	navigator.getBattery().then(function(b){
 		console.log(b.level * 100 + "%");	//デバッグ用
@@ -38,10 +38,23 @@ window.onload = function(){	//background.jsからメッセージを受信する�
 			after = b.level * 100;	//計測終了時のバッテリー
 			var result = after - before;
 			var date2 = new Date();
+
+			var result = {	//データベースに結果を格納
+				url:document.location.href,
+				date: new Date(),
+				element:"aaaaa"
+			}
+			$.ajax({
+				url:"https://127.0.0.1:4443/nkjm/result/",
+				type:"POST",
+				contentType:"application/json",
+				data:JSON.stringify(result)
+			})
+
 			chrome.runtime.sendMessage(			//計測結果をメッセージで送信
 				{	
 					msg: "finished",
-					year1: date1.getFullYear(),
+/*					year1: date1.getFullYear(),
 					year2: date2.getFullYear(),
 					month1: date1.getMonth()+1,
 					month2: date2.getMonth()+1,
@@ -55,19 +68,19 @@ window.onload = function(){	//background.jsからメッセージを受信する�
 					second2: date2.getSeconds(),
 					result: result,
 					height: getHeight(),
-					width: getWidth(),
+					width: getWidth(),	*/
 				}, function(response){	//mongoDBに計測結果を格納
-					var result = {
+				/*	var result = {
 						url:document.location.href,
 						date: new Date(),
 						element:"aaaaa"
 					}
 					$.ajax({
-						url:"http://127.0.0.1:8080/nkjm/result/",
+						url:"https://127.0.0.1:4443/nkjm/result/",
 						type:"POST",
 						contentType:"application/json",
 						data:JSON.stringify(result)
-					})
+					})	*/
 				}
 			);
 		});

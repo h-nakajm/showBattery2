@@ -44,7 +44,7 @@ chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを
 			  //処理なし
 			});
 		} else */if(request.msg == "finished"){	//結果を表示
-			console.log("start: ")
+/*			console.log("start: ")
 			result += "start: \n";
 			console.log(request.year1 + "年" + request.month1 + "月" + request.day1 + "日"
 					+ request.hour1 + "時" + request.minute1 + "分" + request.second1 + "秒");
@@ -65,14 +65,15 @@ chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを
 			console.log("Window Width: " + request.width);
 			result = result + "Window Width: " + request.width + "\n";
 			console.log("------------------------------");
-			result += "------------------------------\n";
+			result += "------------------------------\n";	*/
 			chrome.tabs.remove(sender.tab.id);	//計測が終了したタブを閉じる
 
 			if(UrlList.length > Index){
 				chrome.tabs.create({url: UrlList[Index]});	//次のタブを生成	
 				Index++;
-			}/* else {	//結果を記入したファイルをダウンロード
-				var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);	//文字化け対策(?)
+			} else {	//結果を記入したファイルをダウンロード
+				Index = 1;
+				/*var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);	//文字化け対策(?)
 				var mimeType = 'text/plain';
 				var blob = new Blob([bom, result], {type: mimeType});
 				var name = 'result.txt';
@@ -88,8 +89,8 @@ chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを
 					document.body.removeChild(a);
 				} else {
 					console.log('error');
-				}
-			}*/
+				}*/
+			}
 		}
 	}
 );
