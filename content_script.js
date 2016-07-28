@@ -24,8 +24,8 @@ window.onload = function(){	//background.jsからメッセージを受信する�
 
 	var date1 = new Date();
 	var before,after;	//計測前後のバッテリーを記憶
-//	var timer = 1 * 60000;	//計測する時間(ミリ秒指定)
-	var timer = 5000;	//5秒(デバッグ用)
+	var timer = 1 * 60000;	//計測する時間(ミリ秒指定)
+//	var timer = 5000;	//5秒(デバッグ用)
 
 	navigator.getBattery().then(function(b){
 		console.log(b.level * 100 + "%");	//デバッグ用
