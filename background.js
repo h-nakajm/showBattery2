@@ -33,63 +33,14 @@ var start = function() {
 
 chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを受信すると実行
 	function (request, sender, sendResponse) {
-		/*if(request.msg == "sending..."){
-			console.log("start: ");
-			result += "start: \n";
-			console.log(request.year + "年" + request.month + "月" + request.day + "日"
-					+ request.hour + "時" + request.minute + "分" + request.second + "秒");
-			result = result + request.year + "年" + request.month + "月" + request.day + "日"
-					+ request.hour + "時" + request.minute + "分" + request.second + "秒\n";
-			chrome.tabs.sendMessage(sender.tab.id, {msg: "sending..."}, function(response){
-			  //処理なし
-			});
-		} else */if(request.msg == "finished"){	//結果を表示
-/*			console.log("start: ")
-			result += "start: \n";
-			console.log(request.year1 + "年" + request.month1 + "月" + request.day1 + "日"
-					+ request.hour1 + "時" + request.minute1 + "分" + request.second1 + "秒");
-			result = result + request.year1 + "年" + request.month1 + "月" + request.day1 + "日"
-					+ request.hour1 + "時" + request.minute1 + "分" + request.second1 + "秒\n";
-			console.log("finish: ");
-			result += "finish: \n";
-			console.log(request.year2 + "年" + request.month2 + "月" + request.day2 + "日"
-					+ request.hour2 + "時" + request.minute2 + "分" + request.second2 + "秒");
-			result = result + request.year2 + "年" + request.month2 + "月" + request.day2 + "日"
-					+ request.hour2 + "時" + request.minute2 + "分" + request.second2 + "秒\n";
-			console.log("url: " + UrlList[Index-1]);
-			result = result + "url: " + UrlList[Index-1] + "\n";
-			console.log("Energy Consumption: " + request.result + "%");
-			result = result + "Energy Consumption: " + request.result + "%\n";
-			console.log("Window Height: " + request.height);
-			result = result + "Window Height: " + request.height + "\n";
-			console.log("Window Width: " + request.width);
-			result = result + "Window Width: " + request.width + "\n";
-			console.log("------------------------------");
-			result += "------------------------------\n";	*/
+		if(request.msg == "finished"){	//結果を表示
 			chrome.tabs.remove(sender.tab.id);	//計測が終了したタブを閉じる
 
 			if(UrlList.length > Index){
 				chrome.tabs.create({url: UrlList[Index]});	//次のタブを生成	
 				Index++;
-			} else {	//結果を記入したファイルをダウンロード
+			} else {	//Indexを1に戻す
 				Index = 1;
-				/*var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);	//文字化け対策(?)
-				var mimeType = 'text/plain';
-				var blob = new Blob([bom, result], {type: mimeType});
-				var name = 'result.txt';
-
-				var a = document.createElement('a');
-				a.download = name;
-				a.target = '_blank';
-
-				if(window.URL && window.URL.createObjectURL){
-					a.href = window.URL.createObjectURL(blob);
-					document.body.appendChild(a);
-					a.click();
-					document.body.removeChild(a);
-				} else {
-					console.log('error');
-				}*/
 			}
 		}
 	}
@@ -98,29 +49,4 @@ chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを
 (function() {   //アイコンクリックで測定開始
 	chrome.browserAction.onClicked.addListener(start);
 }) ();
-
-
-/*(function() {     //まつ本先生のコード
-    // stub
-    var getNextUrl = function() {
-        return 'http://bollywoodindianmovies.com/';
-    }
-
-    var url = getNextUrl();
-
-    chrome.tabs.create(
-        {url: url},
-        function(tab) {
-            console.log(tab);
-            //waitContentLoad();
-
-            // message passing.
-            chrome.tabs.sendMessage(tab.id, {task: '001', msg: 'hello'});
-
-            var before = new Date();
-            //tab.sendMessage(getTask);
-            console.log((new Date() - before));
-        }
-    );
-}());*/
 

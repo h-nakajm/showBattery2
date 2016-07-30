@@ -1,25 +1,3 @@
-var tab_id;
-//var date = new Date();
-
-/*chrome.runtime.sendMessage(
-		{	msg: "sending...",
-			year: date.getFullYear(),
-			month: date.getMonth()+1,
-			day: date.getDate(),
-			hour: date.getHours(),
-			minute: date.getMinutes(),
-			second: date.getSeconds(),
-		}, function(response){	//background.jsにメッセージを送信
-});	*/
-
-/*var getTabId = function(){
-	var tab_id;
-	chrome.tabs.getCurrent(function(tab){
-		tab_id = tab.id;
-	});
-	return tab_id;
-};*/
-
 window.onload = function(){	//background.jsからメッセージを受信すると実行開始
 
 	var date1 = new Date();
@@ -41,7 +19,8 @@ window.onload = function(){	//background.jsからメッセージを受信する�
 
 			var result = {	//データベースに結果を格納
 				url:document.location.href,
-				date: new Date(),
+				start_date: date1,
+				finish_date: new Date(),
 				element:"aaaaa"
 			}
 			$.ajax({
@@ -54,33 +33,8 @@ window.onload = function(){	//background.jsからメッセージを受信する�
 			chrome.runtime.sendMessage(			//計測結果をメッセージで送信
 				{	
 					msg: "finished",
-/*					year1: date1.getFullYear(),
-					year2: date2.getFullYear(),
-					month1: date1.getMonth()+1,
-					month2: date2.getMonth()+1,
-					day1: date1.getDate(),
-					day2: date2.getDate(),
-					hour1: date1.getHours(),
-					hour2: date2.getHours(),
-					minute1: date1.getMinutes(),
-					minute2: date2.getMinutes(),
-					second1: date1.getSeconds(),
-					second2: date2.getSeconds(),
-					result: result,
-					height: getHeight(),
-					width: getWidth(),	*/
-				}, function(response){	//mongoDBに計測結果を格納
-				/*	var result = {
-						url:document.location.href,
-						date: new Date(),
-						element:"aaaaa"
-					}
-					$.ajax({
-						url:"https://127.0.0.1:4443/nkjm/result/",
-						type:"POST",
-						contentType:"application/json",
-						data:JSON.stringify(result)
-					})	*/
+				}, function(response){	
+
 				}
 			);
 		});
@@ -89,13 +43,6 @@ window.onload = function(){	//background.jsからメッセージを受信する�
 	setTimeout(countup, timer);	//countupをtimer時間後に実行
 
 };
-
-/*chrome.runtime.onMessage.addListener(
-	function(request, sender, sendResponse){
-	    console.log('received!!');
-	    showBattery();
-	}
-);	*/
 
 var getHeight = function() {	//ウィンドウサイズを表示
 	return(document.body.clientHeight);	//高さ
