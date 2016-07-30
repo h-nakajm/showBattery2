@@ -21,22 +21,25 @@ window.onload = function(){	//画像まで読み込み終わると実行
 				url:document.location.href,
 				start_date: date1,
 				finish_date: new Date(),
-				element:"aaaaa"
+				window_height:getHeight(),
+				window_width:getWidth()
 			}
 			$.ajax({
 				url:"https://127.0.0.1:4443/nkjm/result/",
 				type:"POST",
 				contentType:"application/json",
 				data:JSON.stringify(result)
-			})
+			});
 
-			chrome.runtime.sendMessage(	//計測終了をbackground.jsに伝える
-				{	
-					msg: "finished",
-				}, function(response){	
+			$(document).ajaxComplete(function(){	//ajax通信が完了すると実行
+				chrome.runtime.sendMessage(	//計測終了をbackground.jsに伝える
+					{	
+						msg: "finished",
+					}, function(response){	
 
-				}
-			);
+					}
+				);
+			});
 		});
 	};
 
