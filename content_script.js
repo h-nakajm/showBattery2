@@ -1,4 +1,4 @@
-window.onload = function(){	//background.jsからメッセージを受信すると実行開始
+window.onload = function(){	//画像まで読み込み終わると実行
 
 	var date1 = new Date();
 	var before,after;	//計測前後のバッテリーを記憶
@@ -30,7 +30,7 @@ window.onload = function(){	//background.jsからメッセージを受信する�
 				data:JSON.stringify(result)
 			})
 
-			chrome.runtime.sendMessage(			//計測結果をメッセージで送信
+			chrome.runtime.sendMessage(	//計測終了をbackground.jsに伝える
 				{	
 					msg: "finished",
 				}, function(response){	
