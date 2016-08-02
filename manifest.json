@@ -1,6 +1,6 @@
 {
 	"manifest_version": 2,
-	"name": "Show Battery Consumption2",
+	"name": "Show Battery2",
 	"version": "1.0",
 	"description": "This extension will show battery consumption.",
 	"browser_action": {

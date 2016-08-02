@@ -5,22 +5,22 @@ window.onload = function(){	//画像まで読み込み終わると実行
 //	var timer = 1 * 60000;	//計測する時間(ミリ秒指定)
 	var timer = 5000;	//5秒(デバッグ用)
 
-	navigator.getBattery().then(function(b){
+/*	navigator.getBattery().then(function(b){
 		console.log(b.level * 100 + "%");	//デバッグ用
 		before = b.level * 100;	//計測開始時のバッテリー
-	});
+	});	*/
 
 	var countup = function(){
-		navigator.getBattery().then(function(b){
-			console.log(b.level * 100 + "%");	//デバッグ用
+		//navigator.getBattery().then(function(b){
+		/*	console.log(b.level * 100 + "%");	//デバッグ用
 			after = b.level * 100;	//計測終了時のバッテリー
-			var result = after - before;
+			var result = after - before;	*/
 			var date2 = new Date();
 
 			var result = {	//データベースに結果を格納
 				url:document.location.href,
 				start_date: date1,
-				finish_date: new Date(),
+				finish_date: date2,
 				window_height:getHeight(),
 				window_width:getWidth()
 			}
@@ -40,7 +40,7 @@ window.onload = function(){	//画像まで読み込み終わると実行
 					}
 				);
 			});
-		});
+		//});
 	};
 
 	setTimeout(countup, timer);	//countupをtimer時間後に実行
