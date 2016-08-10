@@ -21,8 +21,8 @@ window.onload = function(){	//画像まで読み込み終わると実行
 				url:document.location.href,
 				start_date: date1,
 				finish_date: date2,
-				window_height:getHeight(),
-				window_width:getWidth()
+				document_body_clientHeight:getHeight(),
+				document_body_scrollWidth:getWidth()
 			}
 			$.ajax({
 				url:"https://127.0.0.1:4443/nkjm/result/",
