@@ -1,3 +1,5 @@
+var date0 = new Date();
+
 window.onload = function(){	//画像まで読み込み終わると実行
 
 	var date1 = new Date();
@@ -23,7 +25,8 @@ window.onload = function(){	//画像まで読み込み終わると実行
 				finish_date: date2,
 				document_body_clientHeight:getHeight(),
 				document_body_scrollWidth:getWidth(),
-				html:document.getElementsByTagName('html')[0].innerHTML
+				html:document.getElementsByTagName('html')[0].innerHTML,
+				time: date1 - date0
 			}
 			$.ajax({
 				url:"https://127.0.0.1:4443/nkjm/result/",
