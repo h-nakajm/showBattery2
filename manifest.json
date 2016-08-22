@@ -19,7 +19,7 @@
 			"content_script.js",
 			"jquery-2.2.3.min.js"
 		],
-		"run_at": "document_end"
+		"run_at": "document_start"
         }
     ],
 	"permissions": [

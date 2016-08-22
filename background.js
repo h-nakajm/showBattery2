@@ -4,7 +4,8 @@ var Index = 1;	//UrlList走査用のGlobal variable(インクリメントのみ)
 var start = function() {
 
 	chrome.runtime.getPackageDirectoryEntry(function(entry) {	//indexファイルの読み込み
-		entry.getFile('index.json', {create: false}, function(file_entry) {
+		//entry.getFile('index.json', {create: false}, function(file_entry) {
+		entry.getFile('index2.json', {create: false}, function(file_entry) {
 			file_entry.file(function(file){
 				var reader = new FileReader();
 				reader.onload = function(event){	//ファイルのreadが完了すると実行
