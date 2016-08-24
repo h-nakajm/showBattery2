@@ -1,3 +1,4 @@
+var a;
 var stopwatch = {};
 var date0; 
 function nkjm2(){
@@ -8,7 +9,7 @@ function nkjm2(){
 
 nkjm2();
 document.addEventListener("DOMContentLoaded", function domcl(event) {
-	stopwatch.don_content_loaded = new Date();
+	stopwatch.dom_content_loaded = new Date();
 });
 
 //document.addEventListener("loaded", function loaded(event){
@@ -48,7 +49,12 @@ window.onload = function nkjm(){	//画像まで読み込み終わると実行
 				contentType:"application/json",
 				data:JSON.stringify(result)
 			});
-
+			a = stopwatch;
+				
+			console.log(stopwatch.start.toISOString());
+			console.log(stopwatch.dom_content_loaded.toISOString());
+			console.log(stopwatch.onload.toISOString());
+			console.log(stopwatch.finished.toISOString());
 			$(document).ajaxComplete(function(){	//ajax通信が完了すると実行
 				chrome.runtime.sendMessage(	//計測終了をbackground.jsに伝える
 					{	
@@ -72,11 +78,11 @@ var getHeight = function() {	//ウィンドウサイズを表示
 var getWidth = function() {
 	return(document.body.scrollWidth);	//幅
 }
-var a;
+//var a;
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 	// write some code
 	console.log(request);
 	console.log(sender);
-	a = request;
+//	a = request;
 	stopwatch.tab_created = new Date(request.tab_created);
 })
