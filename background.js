@@ -19,17 +19,36 @@ var loadIndexes = function() {
 var startMesurement = function(event){
 	UrlList = JSON.parse(event.target.result);	//urlのリストを配列に格納
 //	chrome.tabs.create({url: "about:blank"}, function(tab){
-	chrome.tabs.create({url: UrlList[0]}, function(tab){
+//	chrome.tabs.create({url: UrlList[0]}, function(tab){
 
-		setTimeout(function(){
+	chrome.tabs.query(
+        {currentWindow: true, active: true},
+        function (tabArray) {
+            console.log(tabArray[0].id);
+            TabId = tabArray[0].id;
+            chrome.tabs.update(TabId, {url: UrlList[0]}, function(newTab){
+                setTimeout(function(){
 
-		}, 1000);
+				}, 1000);
 
-		TabId = tab.id;
-		setTimeout(function(){
+				TabId = newTab.id;
+				setTimeout(function(){
 
-		}, WaitTabCreate);
-	});
+				}, WaitTabCreate);
+            });
+        }
+    );
+
+	// chrome.tabs.update({url: UrlList[0]}, function(tab){
+	// 	setTimeout(function(){
+
+	// 	}, 1000);
+
+	// 	TabId = tab.id;
+	// 	setTimeout(function(){
+
+	// 	}, WaitTabCreate);
+	// });
 };
 
 var mesureSpecifiedIndex = function(si){

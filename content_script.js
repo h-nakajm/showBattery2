@@ -44,7 +44,7 @@ window.onload = function nkjm(){	//画像まで読み込み終わると実行
 			$(document).ajaxComplete(function(){	//ajax通信が完了すると実行
 				chrome.runtime.sendMessage(	//計測終了をbackground.jsに伝える
 					{
-						msg: "finid//shed"
+						msg: "finished"
 					}, function(response){
 
 					}
