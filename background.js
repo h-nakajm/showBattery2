@@ -2,8 +2,11 @@ var UrlList;
 var TabId = 0;
 var WaitTabCreate = 3000;
 var Index = 1;	//UrlList走査用のGlobal variable(インクリメントのみ)
+var ports = [];
+
 var loadIndexes = function() {
 
+	console.log('start');
 	chrome.runtime.getPackageDirectoryEntry(function(entry) {	//indexファイルの読み込み
 		entry.getFile('index2.json', {create: false}, function(file_entry) {
 			file_entry.file(function(file){
@@ -15,6 +18,28 @@ var loadIndexes = function() {
 	});
 
 };
+
+chrome.runtime.onConnect.addListener(function (port) {
+    if (port.name !== "devtools")
+        return;
+    ports.push(port);
+    console.log('connected.');
+
+    // Remove port when destroyed (eg when devtools instance is closed)
+    port.onDisconnect.addListener(function () {
+        console.log('disconnected.');
+        var i = ports.indexOf(port);
+        if (i !== -1)
+            ports.splice(i, 1);
+    });
+
+    port.onMessage.addListener(function (msg) {
+        var a = JSON.parse(msg);
+        chrome.tabs.sendMessage(TabId, msg, function () {
+			console.log(a);
+        });
+    });
+});
 
 var startMesurement = function(event){
 	UrlList = JSON.parse(event.target.result);	//urlのリストを配列に格納
