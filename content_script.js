@@ -15,12 +15,11 @@ document.addEventListener("DOMContentLoaded", function domcl(event) {
 window.onload = function nkjm(){	//画像まで読み込み終わると実行
 
 	stopwatch.onload = new Date();
-	var before,after;	//計測前後のバッテリーを記憶
+
 //	var timer = 60 * 60000;	//計測する時間(ミリ秒指定)
 	var timer = 5000;	//5秒(デバッグ用)
 
 	var countup = function(){
-			var result = after - before;
 			stopwatch.finished = new Date();
 
 			var result = {	//データベースに結果を格納
