@@ -33,10 +33,11 @@ chrome.runtime.onConnect.addListener(function (port) {
             ports.splice(i, 1);
     });
 
-    port.onMessage.addListener(function (msg) {
+    port.onMessage.addListener(function (msg) {    //devtoolsからメッセージを受け取ると実行
         var a = JSON.parse(msg);
+		console.log(a);
         chrome.tabs.sendMessage(TabId, msg, function () {
-			console.log(a);
+			//console.log(a);
         });
     });
 });
@@ -60,6 +61,8 @@ var startMesurement = function(event){
 				setTimeout(function(){
 
 				}, WaitTabCreate);
+
+				ports[0].postMessage(UrlList[0]);
             });
         }
     );
@@ -81,6 +84,7 @@ var mesureSpecifiedIndex = function(si){
 		var tab_created = new Date();
 		console.log(tab_created.toISOString());
 		chrome.tabs.sendMessage(TabId, {tab_created: tab_created.toString()}, function(){});
+		ports[0].postMessage(UrlList[si]);
 	});
 };
 

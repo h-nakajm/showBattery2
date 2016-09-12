@@ -1,13 +1,19 @@
 var port = chrome.runtime.connect({name: 'devtools'});
 
 port.onMessage.addListener(function(msg){
-    
+    chrome.devtools.network.getHAR(function xxx(result) {
+		console.log(msg);
+		console.log(result);
+	});
 });
 
-var i=0;
-var entry_length = 0;
+// var i=0;
+// var entry_length = 0;
 
-chrome.devtools.network.onRequestFinished.addListener(function(request){
+
+
+/*chrome.devtools.network.onRequestFinished.addListener(function(request){
+//	var i=0;
 	if(request.serverIPAddress !== "127.0.0.1") {
 		i++;
 		chrome.devtools.network.getHAR(function xxx(result){
@@ -21,7 +27,8 @@ chrome.devtools.network.onRequestFinished.addListener(function(request){
 		});
 		console.log(i);
 		console.log(entry_length);
-		console.log(request.serverIPAddress);
+		console.log('--------------------');
+		//console.log(request.serverIPAddress);
 	}
-});
+});*/
 
