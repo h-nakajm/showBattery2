@@ -54,15 +54,18 @@ var startMesurement = function(event){
             TabId = tabArray[0].id;
             chrome.tabs.update(TabId, {url: UrlList[0]}, function(newTab){
                 setTimeout(function(){
-
+					chrome.tabs.sendMessage(TabId, {tab_created: tab_created.toISOString()}, function(){});
 				}, 1000);
 
 				TabId = newTab.id;
+				var tab_created = new Date();
+				console.log(tab_created.toISOString());
+				// chrome.tabs.sendMessage(TabId, {tab_created: tab_created.toISOString()}, function(){});
 				setTimeout(function(){
 
 				}, WaitTabCreate);
 
-				ports[0].postMessage(UrlList[0]);
+				//ports[0].postMessage(UrlList[0]);
             });
         }
     );
@@ -83,8 +86,11 @@ var mesureSpecifiedIndex = function(si){
 	chrome.tabs.update(TabId, {url: UrlList[si]}, function(tab){
 		var tab_created = new Date();
 		console.log(tab_created.toISOString());
-		chrome.tabs.sendMessage(TabId, {tab_created: tab_created.toString()}, function(){});
-		ports[0].postMessage(UrlList[si]);
+		setTimeout(function(){
+			chrome.tabs.sendMessage(TabId, {tab_created: tab_created.toISOString()}, function(){});
+		}, 1000);
+		//chrome.tabs.sendMessage(TabId, {tab_created: tab_created.toISOString()}, function(){});
+		//ports[0].postMessage(UrlList[si]);
 	});
 };
 
@@ -98,6 +104,8 @@ chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを
 			} else {	//Indexを1に戻す
 				Index = 1;
 			}
+		} else if(request.msg == "getHAR") {  //計測開始時にgetHARを開始させる
+			ports[0].postMessage("getHAR");
 		}
 	}
 );

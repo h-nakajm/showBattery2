@@ -1,5 +1,6 @@
 var a;
 var stopwatch = {};   //タイマーを格納するオブジェクト
+var har;
 //var date0;
 function nkjm2(){
 	stopwatch.start = new Date();
@@ -14,6 +15,14 @@ document.addEventListener("DOMContentLoaded", function domcl(event) {
 //document.addEventListener("loaded", function loaded(event){
 window.onload = function nkjm(){	//画像まで読み込み終わると実行
 
+	chrome.runtime.sendMessage(	//計測開始時に，devtoolsにgetHARを開始させる
+		{
+			msg: "getHAR"
+		}, function(response){
+
+		}
+	);
+
 	stopwatch.onload = new Date();
 
 //	var timer = 60 * 60000;	//計測する時間(ミリ秒指定)
@@ -27,6 +36,7 @@ window.onload = function nkjm(){	//画像まで読み込み終わると実行
 				document_body_clientHeight:getHeight(),
 				document_body_scrollWidth:getWidth(),
 				html:document.getElementsByTagName('html')[0].innerHTML,
+				har: har,
 				stopwatch: stopwatch
 			};
 			$.ajax({
@@ -65,7 +75,12 @@ var getWidth = function() {
 };
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-	console.log(request);
+	//console.log(JSON.parse(request));
+	console.log(request.tab_created);
 	console.log(sender);
-	stopwatch.tab_created = new Date(request.tab_created);
+	if(request.tab_created != null) {
+		stopwatch.tab_created = new Date(request.tab_created);
+	} else {
+		har = JSON.parse(request);
+	}
 });

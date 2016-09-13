@@ -4,6 +4,7 @@ port.onMessage.addListener(function(msg){
     chrome.devtools.network.getHAR(function xxx(result) {
 		console.log(msg);
 		console.log(result);
+		port.postMessage(JSON.stringify(result));
 	});
 });
 
