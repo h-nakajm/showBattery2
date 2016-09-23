@@ -40,6 +40,7 @@ window.onload = function nkjm(){	//画像まで読み込み終わると実行
 		if ($(d).css('font-family').match(/__ELEMENT__/)) {
 			console.log(d);
 			var ads = {};
+			ads.location = document.location.href,
 			ads.url = d.src;
 			ads.width = d.width;
 			ads.height = d.height;
