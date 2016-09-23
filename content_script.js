@@ -1,5 +1,6 @@
 var a;
 var stopwatch = {};   //タイマーを格納するオブジェクト
+var window_size = {};
 var har;
 //var date0;
 function nkjm2(){
@@ -74,13 +75,92 @@ window.onload = function nkjm(){	//画像まで読み込み終わると実行
 
 };
 
-var getHeight = function() {	//ウィンドウサイズを表示
-	return(document.body.clientHeight);	//高さ
+
+// windowsizeを取得する関数群
+// 幅
+
+var get_screen_width = function() {
+	return(screen.width);
 };
 
-var getWidth = function() {
-	return(document.body.scrollWidth);	//幅
+var get_screen_availWidth = function() {
+	return(screen.availWidth);
 };
+
+var get_window_innerWidth = function() {
+	return(window.innerWidth);
+};
+
+var get_window_outerWidth = function() {
+	return(window.outerWidth);
+};
+
+var get_document_body_clientWidth = function() {
+	return(document.body.clientWidth);
+};
+
+var get_document_body_offsetWidth = function() {
+	return(document.body.offsetWidth);
+};
+
+var get_document_body_scrollWidth = function() {
+	return(document.body.scrollWidth);
+};
+
+var get_document_documentElement_clientWidth = function() {
+	return(document.documentElement.clientWidth);
+};
+
+var get_document_documentElement_offsetWidth = function() {
+	return(document.documentElement.offsetWidth);
+};
+
+var get_document_documentElement_scrollWidth = function() {
+	return(document.documentElement_scrollWidth);
+};
+
+// 高さ
+
+var get_screen_height = function() {
+	return(screen.height);
+};
+
+var get_screen_availHeight = function() {
+	return(screen.availHeight);
+};
+
+var get_window_innerHeight = function() {
+	return(window.innerHeight);
+};
+
+var get_window_outerHeight = function() {
+	return(window.outerHeight);
+};
+
+var get_document_body_clientHeight = function() {
+	return(document.body.clientHeight);
+};
+
+var get_document_body_offsetHeight = function() {
+	return(document.body.offsetHeight);
+};
+
+var get_document_body_scrollHeight = function() {
+	return(document.body.scrollHeight);
+};
+
+var get_document_documentElement_clientHeight = function() {
+	return(document.documentElement_clientHeight);
+};
+
+var get_document_documentElement_offsetHeight = function() {
+	return(document.documentElement .offsetHeight);
+};
+
+var get_document_documentElement_scrollHeight = function() {
+	return(document.documentElement .scrollHeight);
+};
+
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 	//console.log(JSON.parse(request));
@@ -101,13 +181,36 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 		var countup = function(){
 			stopwatch.finish_waiting = new Date();
 
+			                         window_size.scren_width = get_screen_width();
+			                   window_size.screen_availWidth = get_screen_availWidth();
+			                   window_size.window_innerWidth = get_window_innerWidth();
+			                   window_size.window_outerWidth = get_window_outerWidth();
+			           window_size.document_body_clientWidth = get_document_body_clientWidth();
+			           window_size.document_body_offsetWidth = get_document_body_offsetWidth();
+			           window_size.document_body_scrollWidth = get_document_body_scrollWidth();
+			window_size.document_documentElement_clientWidth = get_document_documentElement_clientWidth();
+			window_size.document_documentElement_offsetWidth = get_document_documentElement_offsetWidth();
+			window_size.document_documentElement_scrollWidth = get_document_documentElement_scrollWidth();
+
+			                        window_size.screen_height = get_screen_height();
+			                   window_size.screen_availHeight = get_screen_availHeight();
+			                   window_size.window_innerHeight = get_window_innerHeight();
+			                   window_size.window_outerHeight = get_window_outerHeight();
+			           window_size.document_body_clientHeight = get_document_body_clientHeight();
+			           window_size.document_body_offsetHeight = get_document_body_offsetHeight();
+			           window_size.document_body_scrollHeight = get_document_body_scrollHeight();
+			window_size.document_documentElement_clientHeight = get_document_documentElement_clientHeight();
+			window_size.document_documentElement_offsetHeight = get_document_documentElement_offsetHeight();
+			window_size.document_documentElement_scrollHeight = get_document_documentElement_scrollHeight();
+
 			var result = {	//データベースに結果を格納
 				url:document.location.href,
-				document_body_clientHeight:getHeight(),
-				document_body_scrollWidth:getWidth(),
+				//document_body_clientHeight:getDocumentBodyClientHeight(),
+				//document_body_scrollWidth:getDocumentBodyScrollWidth(),
 				html:document.getElementsByTagName('html')[0].innerHTML,
 				har: har,
-				stopwatch: stopwatch
+				stopwatch: stopwatch,
+				window_size: window_size
 			};
 			$.ajax({
 				url:"https://127.0.0.1:4443/nkjm/result/",
