@@ -2,6 +2,7 @@ var a;
 var stopwatch = {};   //タイマーを格納するオブジェクト
 var window_size = {};
 var har;
+var experiment_type = 'raw';
 //var date0;
 function nkjm2(){
 	stopwatch.start = new Date();
@@ -183,9 +184,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 
 			var result = {	//データベースに結果を格納
 				url:document.location.href,
-				//document_body_clientHeight:getDocumentBodyClientHeight(),
-				//document_body_scrollWidth:getDocumentBodyScrollWidth(),
 				html:document.getElementsByTagName('html')[0].innerHTML,
+				experiment_type: experiment_type,
 				har: har,
 				stopwatch: stopwatch,
 				window_size: window_size
