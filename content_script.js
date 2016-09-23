@@ -194,7 +194,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 				window_size: window_size
 			};
 			$.ajax({
-				url:"https://127.0.0.1:4443/nkjm/result/",
+				url:"https://192.168.146.114:4443/nkjm/result/",
 				type:"POST",
 				contentType:"application/json",
 				data:JSON.stringify(result)
