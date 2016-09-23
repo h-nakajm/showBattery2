@@ -8,7 +8,8 @@ var loadIndexes = function() {
 
 	console.log('start');
 	chrome.runtime.getPackageDirectoryEntry(function(entry) {	//indexファイルの読み込み
-		entry.getFile('alexa100.txt', {create: false}, function(file_entry) {
+		//entry.getFile('alexa100.txt', {create: false}, function(file_entry) {
+		entry.getFile('index2.json', {create: false}, function(file_entry) {
 			file_entry.file(function(file){
 				var reader = new FileReader();
 				reader.onload = startMesurement;	//ファイルのreadが完了すると実行
