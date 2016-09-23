@@ -151,6 +151,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 	} else {
 		//	var timer = 60 * 60000;	//計測する時間(ミリ秒指定)
 		var timer = 5000;	//5秒(デバッグ用)
+		var interval = 10000;  //10秒(計測毎の待ち時間)
 
 
 		// getHARが終わったら計測開始
@@ -203,13 +204,18 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 			console.log(stopwatch.onload.toISOString());
 			console.log(stopwatch.finish_waiting.toISOString());
 			$(document).ajaxComplete(function(){	//ajax通信が完了すると実行
-				chrome.runtime.sendMessage(	//計測終了をbackground.jsに伝える
-					{
-						msg: "finished"
-					}, function(response){
+				function each_waiting() {
+					chrome.runtime.sendMessage(	//計測終了をbackground.jsに伝える
+						{
+							msg: "finished"
+						}, function(response){
 
-					}
-				);
+						}
+					);
+				}
+
+				setTimeout(each_waiting, interval);	//each_waitingをinterval時間後に実行
+
 			});
 		};
 
