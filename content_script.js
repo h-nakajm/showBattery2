@@ -44,6 +44,7 @@ window.onload = function nkjm(){	//画像まで読み込み終わると実行
 			ads.url = d.src;
 			ads.width = d.width;
 			ads.height = d.height;
+			ads.experiment_type = experiment_type;
 			$.ajax({
 				url:"https://192.168.146.114:4443/nkjm/element_blocked/",
 				type:"POST",
