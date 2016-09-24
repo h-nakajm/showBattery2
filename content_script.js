@@ -156,8 +156,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 		origin = request.origin;
 		console.log('origin: ' + origin);
 	} else {
-		//	var timer = 60 * 60000;	//計測する時間(ミリ秒指定)
-		var timer = 5000;	//5秒(デバッグ用)
+		var timer = 10000;	//計測する時間(ミリ秒指定,10秒)
+		//var timer = 5000;	//5秒(デバッグ用)
 		var interval = 10000;  //10秒(計測毎の待ち時間)
 
 
