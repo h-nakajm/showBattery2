@@ -2,6 +2,7 @@ var a;
 var stopwatch = {};   //タイマーを格納するオブジェクト
 var window_size = {};
 var har;
+var origin;
 var experiment_type = 'raw';
 //var date0;
 function nkjm2(){
@@ -45,6 +46,7 @@ window.onload = function nkjm(){	//画像まで読み込み終わると実行
 			ads.width = d.width;
 			ads.height = d.height;
 			ads.experiment_type = experiment_type;
+			ads.origin = origin;
 			$.ajax({
 				url:"https://192.168.146.114:4443/nkjm/element_blocked/",
 				type:"POST",
@@ -149,7 +151,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 	console.log(sender);
 
 	if(request.tab_created != null) {
+		console.log('tab_created: ' + request.tab_created);
 		stopwatch.tab_created = new Date(request.tab_created);
+		origin = request.origin;
+		console.log('origin: ' + origin);
 	} else {
 		//	var timer = 60 * 60000;	//計測する時間(ミリ秒指定)
 		var timer = 5000;	//5秒(デバッグ用)
@@ -186,6 +191,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 			window_size.document_documentElement_scrollHeight = get_document_documentElement_scrollHeight();
 
 			var result = {	//データベースに結果を格納
+				origin:origin,
 				url:document.location.href,
 				html:document.getElementsByTagName('html')[0].innerHTML,
 				experiment_type: experiment_type,
@@ -193,6 +199,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 				stopwatch: stopwatch,
 				window_size: window_size
 			};
+			console.log(result.origin);
 			$.ajax({
 				url:"https://192.168.146.114:4443/nkjm/result/",
 				type:"POST",
@@ -202,6 +209,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 			a = stopwatch;
 
 			console.log(stopwatch.start.toISOString());
+			console.log(stopwatch.tab_created.toISOString());
 			console.log(stopwatch.dom_content_loaded.toISOString());
 			console.log(stopwatch.onload.toISOString());
 			console.log(stopwatch.finish_waiting.toISOString());

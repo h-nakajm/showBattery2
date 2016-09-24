@@ -3,13 +3,14 @@ var TabId = 0;
 var WaitTabCreate = 3000;
 var Index = 1;	//UrlList走査用のGlobal variable(インクリメントのみ)
 var ports = [];
+var myAdBlockId = 'ejlbkldnajfkleamlppggnieifgfieol';
 
 var loadIndexes = function() {
 
 	console.log('start');
 	chrome.runtime.getPackageDirectoryEntry(function(entry) {	//indexファイルの読み込み
-		entry.getFile('alexa100.txt', {create: false}, function(file_entry) {
-		//entry.getFile('index2.json', {create: false}, function(file_entry) {
+		//entry.getFile('alexa100.txt', {create: false}, function(file_entry) {
+		entry.getFile('index2.json', {create: false}, function(file_entry) {
 			file_entry.file(function(file){
 				var reader = new FileReader();
 				reader.onload = startMesurement;	//ファイルのreadが完了すると実行
@@ -54,13 +55,17 @@ var startMesurement = function(event){
             console.log(tabArray[0].id);
             TabId = tabArray[0].id;
             chrome.tabs.update(TabId, {url: UrlList[0]}, function(newTab){
-                setTimeout(function(){
-					chrome.tabs.sendMessage(TabId, {tab_created: tab_created.toISOString()}, function(){});
-				}, 1000);
-
-				TabId = newTab.id;
 				var tab_created = new Date();
 				console.log(tab_created.toISOString());
+				chrome.extension.sendRequest(myAdBlockId, {origin: UrlList[0]}, function(){});  //myAdBlockにoriginのurlを送る
+				setTimeout(function(){
+					chrome.tabs.sendMessage(TabId, {
+						tab_created: tab_created.toISOString(),
+						origin: UrlList[0]
+					}, function(){console.log(TabId);});
+				}, 3000);
+
+				TabId = newTab.id;
 				// chrome.tabs.sendMessage(TabId, {tab_created: tab_created.toISOString()}, function(){});
 				setTimeout(function(){
 
@@ -87,8 +92,12 @@ var mesureSpecifiedIndex = function(si){
 	chrome.tabs.update(TabId, {url: UrlList[si]}, function(tab){
 		var tab_created = new Date();
 		console.log(tab_created.toISOString());
+		chrome.extension.sendRequest(myAdBlockId, {origin: UrlList[si]}, function(){});  //myAdBlockにoriginのurlを送る
 		setTimeout(function(){
-			chrome.tabs.sendMessage(TabId, {tab_created: tab_created.toISOString()}, function(){});
+			chrome.tabs.sendMessage(TabId, {
+				tab_created: tab_created.toISOString(),
+				origin: UrlList[si]
+			}, function(){});
 		}, 1000);
 		//chrome.tabs.sendMessage(TabId, {tab_created: tab_created.toISOString()}, function(){});
 		//ports[0].postMessage(UrlList[si]);
@@ -100,6 +109,10 @@ chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを
 		if(request.msg == "finished"){	//結果を表示
 			if(UrlList.length > Index){
 				//少し待つべきかも
+
+
+
+
 				mesureSpecifiedIndex(Index);
 				Index++;
 			} else {	//Indexを1に戻す
