@@ -1,6 +1,7 @@
 var UrlList;
 var TabId = 0;
 var WaitTabCreate = 3000;
+var tab_created;
 var Index = 1;	//UrlList走査用のGlobal variable(インクリメントのみ)
 var ports = [];
 var myAdBlockId = 'ejlbkldnajfkleamlppggnieifgfieol';
@@ -55,15 +56,15 @@ var startMesurement = function(event){
             console.log(tabArray[0].id);
             TabId = tabArray[0].id;
             chrome.tabs.update(TabId, {url: UrlList[0]}, function(newTab){
-				var tab_created = new Date();
+				tab_created = new Date();
 				console.log(tab_created.toISOString());
 				chrome.extension.sendRequest(myAdBlockId, {origin: UrlList[0]}, function(){});  //myAdBlockにoriginのurlを送る
-				setTimeout(function(){
+				/*setTimeout(function(){
 					chrome.tabs.sendMessage(TabId, {
 						tab_created: tab_created.toISOString(),
 						origin: UrlList[0]
 					}, function(){console.log(TabId);});
-				}, 3000);
+				}, 3000);*/
 
 				TabId = newTab.id;
 				// chrome.tabs.sendMessage(TabId, {tab_created: tab_created.toISOString()}, function(){});
@@ -90,15 +91,15 @@ var startMesurement = function(event){
 
 var mesureSpecifiedIndex = function(si){
 	chrome.tabs.update(TabId, {url: UrlList[si]}, function(tab){
-		var tab_created = new Date();
+		tab_created = new Date();
 		console.log(tab_created.toISOString());
 		chrome.extension.sendRequest(myAdBlockId, {origin: UrlList[si]}, function(){});  //myAdBlockにoriginのurlを送る
-		setTimeout(function(){
+		/*setTimeout(function(){
 			chrome.tabs.sendMessage(TabId, {
 				tab_created: tab_created.toISOString(),
 				origin: UrlList[si]
 			}, function(){});
-		}, 1000);
+		}, 1000);*/
 		//chrome.tabs.sendMessage(TabId, {tab_created: tab_created.toISOString()}, function(){});
 		//ports[0].postMessage(UrlList[si]);
 	});
@@ -120,6 +121,16 @@ chrome.runtime.onMessage.addListener(   //content_scriptからメッセージを
 			}
 		} else if(request.msg == "getHAR") {  //計測開始時にgetHARを開始させる
 			ports[0].postMessage("getHAR");
+		} else if(request.msg == "content_start" && Index == 1){
+			chrome.tabs.sendMessage(TabId, {
+				tab_created: tab_created.toISOString(),
+				origin: UrlList[0]
+			}, function(){console.log(TabId);});
+		} else if(request.msg == "content_start" && Index != 1){
+			chrome.tabs.sendMessage(TabId, {
+				tab_created: tab_created.toISOString(),
+				origin: UrlList[Index - 1]
+			}, function(){console.log(TabId);});
 		}
 	}
 );

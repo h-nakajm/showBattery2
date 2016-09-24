@@ -8,6 +8,13 @@ var experiment_type = 'raw';
 function nkjm2(){
 	stopwatch.start = new Date();
 	console.log("date0 defined");
+	chrome.runtime.sendMessage(	//content_scriptの実行開始をbackgroundに伝える
+		{
+			msg: "content_start"
+		}, function(response){
+
+		}
+	);
 }
 
 nkjm2();
