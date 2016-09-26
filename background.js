@@ -59,7 +59,7 @@ var startMesurement = function(event){
 				tab_created = new Date();
 				console.log(tab_created.toISOString());
 				chrome.extension.sendRequest(myAdBlockId, {origin: UrlList[0]}, function(){});  //myAdBlockにoriginのurlを送る
-				/*setTimeout(function(){
+				/*seTimeout(function(){
 					chrome.tabs.sendMessage(TabId, {
 						tab_created: tab_created.toISOString(),
 						origin: UrlList[0]

@@ -167,75 +167,79 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 		//var timer = 5000;	//5秒(デバッグ用)
 		var interval = 10000;  //10秒(計測毎の待ち時間)
 
+		var mesurement = function(){
 
-		// getHARが終わったら計測開始
-		har = JSON.parse(request);
-		stopwatch.start_waiting = new Date();
 
-		var countup = function(){
-			stopwatch.finish_waiting = new Date();
+			// getHARが終わったら計測開始
+			har = JSON.parse(request);
+			stopwatch.start_waiting = new Date();
 
-			                         window_size.scren_width = get_screen_width();
-			                   window_size.screen_availWidth = get_screen_availWidth();
-			                   window_size.window_innerWidth = get_window_innerWidth();
-			                   window_size.window_outerWidth = get_window_outerWidth();
-			           window_size.document_body_clientWidth = get_document_body_clientWidth();
-			           window_size.document_body_offsetWidth = get_document_body_offsetWidth();
-			           window_size.document_body_scrollWidth = get_document_body_scrollWidth();
-			window_size.document_documentElement_clientWidth = get_document_documentElement_clientWidth();
-			window_size.document_documentElement_offsetWidth = get_document_documentElement_offsetWidth();
-			window_size.document_documentElement_scrollWidth = get_document_documentElement_scrollWidth();
+			var countup = function(){
+				stopwatch.finish_waiting = new Date();
 
-			                        window_size.screen_height = get_screen_height();
-			                   window_size.screen_availHeight = get_screen_availHeight();
-			                   window_size.window_innerHeight = get_window_innerHeight();
-			                   window_size.window_outerHeight = get_window_outerHeight();
-			           window_size.document_body_clientHeight = get_document_body_clientHeight();
-			           window_size.document_body_offsetHeight = get_document_body_offsetHeight();
-			           window_size.document_body_scrollHeight = get_document_body_scrollHeight();
-			window_size.document_documentElement_clientHeight = get_document_documentElement_clientHeight();
-			window_size.document_documentElement_offsetHeight = get_document_documentElement_offsetHeight();
-			window_size.document_documentElement_scrollHeight = get_document_documentElement_scrollHeight();
+			    window_size.scren_width = get_screen_width();
+			    window_size.screen_availWidth = get_screen_availWidth();
+			    window_size.window_innerWidth = get_window_innerWidth();
+			    window_size.window_outerWidth = get_window_outerWidth();
+			    window_size.document_body_clientWidth = get_document_body_clientWidth();
+			    window_size.document_body_offsetWidth = get_document_body_offsetWidth();
+			    window_size.document_body_scrollWidth = get_document_body_scrollWidth();
+				window_size.document_documentElement_clientWidth = get_document_documentElement_clientWidth();
+				window_size.document_documentElement_offsetWidth = get_document_documentElement_offsetWidth();
+				window_size.document_documentElement_scrollWidth = get_document_documentElement_scrollWidth();
 
-			var result = {	//データベースに結果を格納
-				origin:origin,
-				url:document.location.href,
-				html:document.getElementsByTagName('html')[0].innerHTML,
-				experiment_type: experiment_type,
-				har: har,
-				stopwatch: stopwatch,
-				window_size: window_size
+			    window_size.screen_height = get_screen_height();
+			    window_size.screen_availHeight = get_screen_availHeight();
+			    window_size.window_innerHeight = get_window_innerHeight();
+			    window_size.window_outerHeight = get_window_outerHeight();
+			    window_size.document_body_clientHeight = get_document_body_clientHeight();
+			    window_size.document_body_offsetHeight = get_document_body_offsetHeight();
+			    window_size.document_body_scrollHeight = get_document_body_scrollHeight();
+				window_size.document_documentElement_clientHeight = get_document_documentElement_clientHeight();
+				window_size.document_documentElement_offsetHeight = get_document_documentElement_offsetHeight();
+				window_size.document_documentElement_scrollHeight = get_document_documentElement_scrollHeight();
+
+				var result = {	//データベースに結果を格納
+					origin:origin,
+					url:document.location.href,
+					html:document.getElementsByTagName('html')[0].innerHTML,
+					experiment_type: experiment_type,
+					har: har,
+					stopwatch: stopwatch,
+					window_size: window_size
+				};
+				console.log(result.origin);
+				$.ajax({
+					url:"https://192.168.146.114:4443/nkjm/result/",
+					type:"POST",
+					contentType:"application/json",
+					data:JSON.stringify(result)
+				});
+				a = stopwatch;
+
+				console.log(stopwatch.start.toISOString());
+				console.log(stopwatch.tab_created.toISOString());
+				console.log(stopwatch.dom_content_loaded.toISOString());
+				console.log(stopwatch.onload.toISOString());
+				console.log(stopwatch.finish_waiting.toISOString());
+				$(document).ajaxComplete(function(){	//ajax通信が完了すると実行
+					function each_waiting() {
+						chrome.runtime.sendMessage(	//計測終了をbackground.jsに伝える
+							{
+								msg: "finished"
+							}, function(response){
+
+							}
+						);
+					}
+
+				});
 			};
-			console.log(result.origin);
-			$.ajax({
-				url:"https://192.168.146.114:4443/nkjm/result/",
-				type:"POST",
-				contentType:"application/json",
-				data:JSON.stringify(result)
-			});
-			a = stopwatch;
 
-			console.log(stopwatch.start.toISOString());
-			console.log(stopwatch.tab_created.toISOString());
-			console.log(stopwatch.dom_content_loaded.toISOString());
-			console.log(stopwatch.onload.toISOString());
-			console.log(stopwatch.finish_waiting.toISOString());
-			$(document).ajaxComplete(function(){	//ajax通信が完了すると実行
-				function each_waiting() {
-					chrome.runtime.sendMessage(	//計測終了をbackground.jsに伝える
-						{
-							msg: "finished"
-						}, function(response){
+			setTimeout(countup, interval);	//countupをinterval時間後に実行
 
-						}
-					);
-				}
-
-				setTimeout(each_waiting, interval);	//each_waitingをinterval時間後に実行
-
-			});
 		};
 
-		setTimeout(countup, timer);	//countupをtimer時間後に実行
+		setTimeout(mesurement, timer);	//mesurementをtimer時間後に実行
 	}
 });
