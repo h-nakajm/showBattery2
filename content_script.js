@@ -165,11 +165,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 	} else {
 		var timer = 10000;	//計測する時間(ミリ秒指定,10秒)
 		//var timer = 5000;	//5秒(デバッグ用)
-		var interval = 10000;  //10秒(計測毎の待ち時間)
 
 		var mesurement = function(){
 
-
+			var interval = 10000;  //10秒(計測毎の待ち時間)
 			// getHARが終わったら計測開始
 			har = JSON.parse(request);
 			stopwatch.start_waiting = new Date();
