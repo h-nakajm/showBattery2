@@ -43,12 +43,14 @@ window.onload = function nkjm(){	//画像まで読み込み終わると実行
 
 	stopwatch.onload = new Date();
 
+	var s = new XMLSerializer();
 	// labeledな広告を選択，DBに書き込み
 	$('*').each(function(i, d) {
 		if ($(d).css('font-family').match(/__ELEMENT__/)) {
 			console.log(d);
 			var ads = {};
-			ads.location = document.location.href,
+			ads.element = s.serializeToString(d); 
+			ads.location = document.location.href;
 			ads.url = d.src;
 			ads.width = d.width;
 			ads.height = d.height;
