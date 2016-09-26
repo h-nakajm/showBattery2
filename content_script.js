@@ -3,7 +3,7 @@ var stopwatch = {};   //タイマーを格納するオブジェクト
 var window_size = {};
 var har;
 var origin;
-var experiment_type = 'raw';
+var experiment_type = 'labeled';
 //var date0;
 function nkjm2(){
 	stopwatch.start = new Date();
